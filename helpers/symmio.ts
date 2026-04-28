@@ -32,7 +32,7 @@ const config: Partial<Record<Chain, string>> = {
   [CHAIN.BASE]: 'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/base_analytics/latest/gn',
   [CHAIN.BSC]: 'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/bnb_analytics/latest/gn',
   [CHAIN.MANTLE]: 'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/mantle_analytics/latest/gn',
-  [CHAIN.BERACHAIN]:'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/bera_analytics/latest/gn',
+  // [CHAIN.BERACHAIN]:'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/bera_analytics/latest/gn',  // goldsky is dropping support for Berachain subgraph
   [CHAIN.MODE]: 'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/mode_analytics/latest/gn',
   [CHAIN.SONIC]: 'https://api.goldsky.com/api/public/project_cm1hfr4527p0f01u85mz499u8/subgraphs/sonic_analytics/latest/gn',
 };
@@ -89,9 +89,14 @@ export const fetchBuilderSymmioPerps = (builderAddresses: string[]): Fetch => {
       openInterestAtEnd += oi;
     })
 
+    // volume is double counted in the subgraphs:
+    //  https://github.com/SYMM-IO/subgraphs/blob/bc015992de840bf0426638da62765ca5298235c2/analytics/handlers/symmio/OpenPositionHandler.ts#L55
+    //  https://github.com/SYMM-IO/subgraphs/blob/bc015992de840bf0426638da62765ca5298235c2/analytics/handlers/commonHandlers/close.ts#L51
+
+
     return {
       timestamp: startOfDay,
-      dailyVolume: dailyVolume.toString(),
+      dailyVolume: Number(dailyVolume) / 2,
       dailyFees: dailyFees.toString(),
       dailyRevenue: dailyRevenue.toString(),
       openInterestAtEnd: openInterestAtEnd.toString(),

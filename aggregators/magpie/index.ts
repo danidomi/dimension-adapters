@@ -3,7 +3,16 @@ import { ChainBlocks, FetchOptions, FetchResult, SimpleAdapter } from "../../ada
 import { getTimestampAtStartOfDayUTC } from "../../utils/date"
 import { CHAIN } from "../../helpers/chains";
 
-const fetch = async (_t: number, _: ChainBlocks, { chain, startOfDay }: FetchOptions): Promise<FetchResult> => {
+const inflatedVolumes = {
+  [CHAIN.ETHEREUM]: ["2026-04-18","2026-04-19"],
+}
+
+const fetch = async (_t: number, _: ChainBlocks, { chain, startOfDay, dateString }: FetchOptions): Promise<FetchResult> => {
+  if (inflatedVolumes[chain] && inflatedVolumes[chain].includes(dateString)) {
+    return {
+      dailyVolume: 0,
+    };
+  }
   const unixTimestamp = getTimestampAtStartOfDayUTC(startOfDay)
   const data = await postURL(`https://prewimvk04.execute-api.us-west-1.amazonaws.com/prod/llama`, { timestamp: unixTimestamp, chain: chain }, 10);
   const chainData = data.result
@@ -120,6 +129,26 @@ const adapter: SimpleAdapter = {
     [CHAIN.MONAD]: {
       fetch,
       start: '2025-11-22',
+    },
+    [CHAIN.MEGAETH]: {
+      fetch,
+      start: '2026-01-30',
+    },
+    [CHAIN.MORPH]: {
+      fetch,
+      start: '2026-01-13',
+    },
+    [CHAIN.FOGO]: {
+      fetch,
+      start: '2026-04-01',
+    },    
+    [CHAIN.KATANA]: {
+      fetch,
+      start: '2026-04-01',
+    },    
+    [CHAIN.TELOS]: {
+      fetch,
+      start: '2026-04-01',
     },
   },
 };

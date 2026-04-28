@@ -50,7 +50,7 @@ const graphs = (graphUrls: ChainEndpoints) => {
 };
 
 const methodology = {
-  dailyFees: "Total cumulativeFeeUsd for specified chain for the given day",
+  Fees: "Total cumulativeFeeUsd for specified chain for the given day",
 };
 
 const adapter: Adapter = {
@@ -59,6 +59,7 @@ const adapter: Adapter = {
     [CHAIN.LINEA]: {
       fetch: graphs(endpoints),
       start: '2024-07-02',
+      deadFrom: '2025-10-31',
     },
   },
   methodology,

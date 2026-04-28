@@ -11,26 +11,26 @@ interface ChainMapping {
 }
 
 export const chainMap: ChainMapping = {
-  ethereum: 'ethereum',
-  base: 'base',
-  optimism: 'optimism',
-  scroll: 'scroll',
-  bsc: 'bsc',
-  arbitrum: 'arbitrum',
-  polygon: 'polygon',
-  blast: 'blast',
-  celo: 'celo',
-  berachain: 'berachain',
-  sonic: 'sonic',
-  mantle: 'mantle',
-  linea: 'linea',
-  sei: 'sei',
-  ripple: 'ripple',
-  ronin: 'ronin',
-  fraxtal: 'fraxtal',
-  metis: 'metis',
-  unichain: 'unichain',
-  mode: 'mode',
+  [CHAIN.ETHEREUM]: 'ethereum',
+  [CHAIN.BASE]: 'base',
+  [CHAIN.OPTIMISM]: 'optimism',
+  [CHAIN.SCROLL]: 'scroll',
+  [CHAIN.BSC]: 'bsc',
+  [CHAIN.ARBITRUM]: 'arbitrum',
+  [CHAIN.POLYGON]: 'polygon',
+  [CHAIN.BLAST]: 'blast',
+  [CHAIN.CELO]: 'celo',
+  [CHAIN.BERACHAIN]: 'berachain',
+  [CHAIN.SONIC]: 'sonic',
+  [CHAIN.MANTLE]: 'mantle',
+  [CHAIN.LINEA]: 'linea',
+  [CHAIN.SEI]: 'sei',
+  [CHAIN.RIPPLE]: 'ripple',
+  [CHAIN.RONIN]: 'ronin',
+  [CHAIN.FRAXTAL]: 'fraxtal',
+  [CHAIN.METIS]: 'metis',
+  [CHAIN.UNICHAIN]: 'unichain',
+  [CHAIN.MODE]: 'mode',
 };
 
 
@@ -96,10 +96,10 @@ export const chainAdapter = (adapterKey: string, assetID: string, startTime: num
 };
 
 export const getOneDayFees = async (assetID: string, startDate: string, endDate: string) => {
-  const result = await httpGet(`https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?page_size=10000&metrics=FeeTotUSD&assets=${assetID}&start_time=${startDate}&end_time=${endDate}`);
+  const result = await httpGet(`https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=${assetID}&metrics=FeeTotNtv&start_time=${startDate}&end_time=${endDate}&frequency=1d`);
   if (!result.data[0]) {
     throw new Error(`Failed to fetch CoinMetrics data for ${assetID} on ${endDate}`);
   }
 
-  return parseFloat(result.data[1]['FeeTotUSD']);
+  return parseFloat(result.data[1]['FeeTotNtv']);
 }

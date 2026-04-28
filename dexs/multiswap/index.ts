@@ -105,6 +105,7 @@ const fetch: FetchV2 = async (fetchOptions) => {
 
 const adapter: SimpleAdapter = {
   version: 2,
+  pullHourly: true,
   adapter: {
     [CHAIN.DCHAIN]: {
       fetch,
@@ -114,7 +115,8 @@ const adapter: SimpleAdapter = {
   methodology: {
     Fees: "Fees paid by users while trading on Multiswap.",
     Revenue: "Fees paid by users while trading on Multiswap.",
-  }
+  },
+  deadFrom: '2025-08-20',
 };
 
 export default adapter; 
